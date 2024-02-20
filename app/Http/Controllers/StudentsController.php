@@ -10,29 +10,33 @@ class StudentsController extends Controller
 {
     public function index()
     {
-        return view('student.all', ["title" => "Students", "students" => Student::all()]);
+        $students = Student::latest()->filter(request(['search']))->paginate(9);
+        return view('student.all', ["title" => "Students", "students" => $students]);
     }
 
-    public function show($student)
+    public function show(Student $student)
     {
-        return view('student.detail', ["title" => "Student Detail", "student" => Student::find($student)]);
+        return view('student.detail', ["title" => "Student Detail", "student" => $student]);
     }
 
     public function create()
     {
-        return view('student.addData', ["title" => "create-new-data", "kelas" => Kelas::all()]);
+        $kelas = Kelas::all();
+        return view('student.addData', ["title" => "Create New Data", "kelas" => $kelas]);
     }
 
     public function store(Request $request)
     {
-        $validateData = $request->validate([
+        $validatedData = $request->validate([
             'nis' => 'required',
             'nama' => 'required',
             'tanggal_lahir' => 'required|date',
             'kelas_id' => 'required|integer',
             'alamat' => 'required',
         ]);
-        $result = Student::create($validateData);
+
+        $result = Student::create($validatedData);
+
         if ($result) {
             return redirect('/students/all')->with('success', 'Data added successfully');
         } else {
@@ -42,7 +46,8 @@ class StudentsController extends Controller
 
     public function destroy(Student $student)
     {
-        $result = Student::destroy($student->id);
+        $result = $student->delete();
+
         if ($result) {
             return redirect('/students/all')->with('success', 'Data deleted successfully');
         } else {
@@ -52,17 +57,17 @@ class StudentsController extends Controller
 
     public function edit(Student $student)
     {
+        $kelas = Kelas::all();
         return view('student.editData', [
             "title" => "Edit Data",
             "student" => $student,
-            "kelas" => Kelas::all()
+            "kelas" => $kelas
         ]);
     }
 
     public function update(Request $request, Student $student)
     {
-        // Validasi input
-        $validateData = $request->validate([
+        $validatedData = $request->validate([
             'nis' => 'required',
             'nama' => 'required',
             'tanggal_lahir' => 'required|date',
@@ -70,10 +75,8 @@ class StudentsController extends Controller
             'alamat' => 'required',
         ]);
 
-        // Update data
-        $result = Student::where('id', $student->id)->update($validateData);
+        $result = $student->update($validatedData);
 
-        // Cek apakah data berhasil diupdate
         if ($result) {
             return redirect('/students/all')->with('success', 'Data updated successfully');
         } else {
