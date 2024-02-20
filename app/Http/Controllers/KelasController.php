@@ -9,27 +9,31 @@ class KelasController extends Controller
 {
     public function index()
     {
-        return view('kelas.all', ["title" => "kelas", "kelas" => Kelas::all()]);
+        $kelas = Kelas::all();
+        return view('kelas.all', ["title" => "Kelas", "kelas" => $kelas]);
     }
 
-    public function show($kelas)
+    public function show($kelasId)
     {
-        return view('kelas.detail', ["title" => "Kelas Detail", "kelas" => Kelas::find($kelas)]);
+        $kelas = Kelas::find($kelasId);
+        return view('kelas.detail', ["title" => "Kelas Detail", "kelas" => $kelas]);
     }
 
     public function create()
     {
-        return view('kelas.addData', ["title" => "create-new-data"]);
+        return view('kelas.addData', ["title" => "Create New Data"]);
     }
 
     public function store(Request $request)
     {
-        $validateData = $request->validate([
+        $validatedData = $request->validate([
             'nama_kelas' => 'required',
         ]);
-        $result = Kelas::create($validateData);
+
+        $result = Kelas::create($validatedData);
+
         if ($result) {
-            return redirect('/kelas/all')->with('success', 'Data added successfully');
+            return redirect('/dashboard/kelas')->with('success', 'Data added successfully');
         } else {
             return back()->with('error', 'Failed to add data');
         }
@@ -37,9 +41,10 @@ class KelasController extends Controller
 
     public function destroy(Kelas $kelas)
     {
-        $result = Kelas::destroy($kelas->id);
+        $result = $kelas->delete();
+
         if ($result) {
-            return redirect('/kelas/all')->with('success', 'Data deleted successfully');
+            return redirect('/dashboard/kelas')->with('success', 'Data deleted successfully');
         } else {
             return back()->with('error', 'Failed to delete data');
         }
@@ -55,15 +60,14 @@ class KelasController extends Controller
 
     public function update(Request $request, Kelas $kelas)
     {
-        // Validasi input
-        $validateData = $request->validate([
+        $validatedData = $request->validate([
             'nama_kelas' => 'required',
         ]);
 
-        // Simpan data ke dalam database
-        $result = Kelas::where('id', $kelas->id)->update($validateData);
+        $result = $kelas->update($validatedData);
+
         if ($result) {
-            return redirect('/kelas/all')->with('success', 'Data updated successfully');
+            return redirect('/dashboard/kelas')->with('success', 'Data updated successfully');
         } else {
             return back()->with('error', 'Failed to update data');
         }
