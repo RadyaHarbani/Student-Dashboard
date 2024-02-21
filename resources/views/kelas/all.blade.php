@@ -3,7 +3,7 @@
 @section('container')
 <div class="container mt-5">
     <div class="col-12 text-center">
-        <h3 class="mb-3 fw-bold">List Kelas</h3>
+        <h3 class="mb-5 fw-bold">List Kelas</h3>
     </div>
     <div class="row justify-content-center">
         <table class="table" style="width: 1000px;">

@@ -10,7 +10,7 @@ class StudentsController extends Controller
 {
     public function index()
     {
-        $students = Student::latest()->filter(request(['search']))->paginate(9);
+        $students = Student::all();
         return view('student.all', ["title" => "Students", "students" => $students]);
     }
 
@@ -38,7 +38,7 @@ class StudentsController extends Controller
         $result = Student::create($validatedData);
 
         if ($result) {
-            return redirect('/students/all')->with('success', 'Data added successfully');
+            return redirect('/dashboard/student')->with('success', 'Data added successfully');
         } else {
             return back()->with('error', 'Failed to add data');
         }
@@ -49,7 +49,7 @@ class StudentsController extends Controller
         $result = $student->delete();
 
         if ($result) {
-            return redirect('/students/all')->with('success', 'Data deleted successfully');
+            return redirect('/dashboard/student')->with('success', 'Data deleted successfully');
         } else {
             return back()->with('error', 'Failed to delete data');
         }
@@ -78,7 +78,7 @@ class StudentsController extends Controller
         $result = $student->update($validatedData);
 
         if ($result) {
-            return redirect('/students/all')->with('success', 'Data updated successfully');
+            return redirect('/dashboard/student')->with('success', 'Data updated successfully');
         } else {
             return back()->with('error', 'Failed to update data');
         }
