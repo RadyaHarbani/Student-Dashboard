@@ -25,7 +25,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/', function () {
+Route::get('/home', function () {
     return view(
         'home',
     [
@@ -44,7 +44,7 @@ Route::get('/about', function () {
     ]);
 });
 
-Route :: group(['middleware' => "checkLogin", 'prefix' => 'students'], function () {
+Route :: group(['prefix' => 'students'], function () {
     Route::get('/all', [StudentsController::class, 'index']);
     Route::get('/detail/{student}', [StudentsController::class, 'show']);
     Route::get('/create', [StudentsController::class, 'create'])->name('student.create');
@@ -54,7 +54,7 @@ Route :: group(['middleware' => "checkLogin", 'prefix' => 'students'], function 
     Route::patch('/students/{student}', [StudentsController::class, 'update'])->name('student.update');
 });
 
-Route :: group(['middleware' => "checkLogin", 'prefix' => 'kelas'], function () {
+Route :: group(['prefix' => 'kelas'], function () {
     Route::get('/all', [KelasController::class, 'index']);
     Route::get('/detail/{kelas}', [KelasController::class, 'show']);
     Route::get('/create', [KelasController::class, 'create'])->name('kelas.create');
@@ -65,10 +65,10 @@ Route :: group(['middleware' => "checkLogin", 'prefix' => 'kelas'], function () 
 });
 
 Route::group(['prefix' => 'auth'], function () {
-    Route::get('/login', [AuthController::class, 'login']);
+    Route::get('/login', [AuthController::class, 'login'])->middleware('guest');
     Route::post('/loginAdd', [AuthController::class, 'auth']);
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/register', [AuthController::class, 'register']);
+    Route::get('/register', [AuthController::class, 'register'])->middleware('guest');
     Route::post('/registerAdd', [AuthController::class, 'store']);
 })->middleware('guest');
 
