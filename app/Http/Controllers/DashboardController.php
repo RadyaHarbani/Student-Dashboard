@@ -14,7 +14,7 @@ class DashboardController extends Controller
 
     public function student()
     {
-        $students = Student::latest()->filter(request(['search']))->paginate(9);
+        $students = Student::latest()->filter(request(['search']))->paginate(5);
 
         return view('dashboard.student', [
             "title" => "Student Page",

@@ -6,10 +6,10 @@
         <div class="col-12 text-center">
             <h3 class="mb-3 fw-bold">Student List</h3>
             <form action="/dashboard/student">
-                <div class="input-group  mb-3">
+                <div class="input-group mb-5">
                     <input type="text" class="form-control " placeholder="Search" name="search"
                         value="{{request('search')}}">
-                    <button class="btn btn-info  bg-success" type="submit" id="button-addon2">Search</button>
+                    <button class="btn btn-info bg-dark text-white" type="submit" id="button-addon2">Search</button>
                 </div>
             </form>
             <a href="{{ route('student.create') }}" class="btn btn-warning mb-4">Add Data</a>
@@ -57,7 +57,7 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center mt-5 mb-5">
             <ul class="pagination">
                 <li class="page-item {{ $students->onFirstPage() ? 'disabled' : '' }}">
                     <a class="page-link" href="{{ $students->previousPageUrl() }}" tabindex="-1"
